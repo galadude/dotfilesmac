@@ -1,4 +1,4 @@
-" My VIMRC 171015
+" My VIMRC 171014
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -11,10 +11,46 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'kien/ctrlp.vim'
 "Plugin 'R-MacVim'
 Plugin 'jceb/vim-orgmode'
+Plugin 'tpope/vim-speeddating'
+Plugin 'benmills/vimux'
 
 " " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
+
+" Vimux fun
+function! MyRSource()
+  normal :w 
+  call VimuxOpenRunner()
+  call VimuxSendText("source('")
+  call VimuxSendText(@%)
+  call VimuxSendText("')")
+  call VimuxSendKeys('enter')
+endfunction
+
+function! MyRLine()
+  call VimuxOpenRunner()
+  normal "kyy
+  call VimuxSendText(@k)
+endfunction
+
+function! MyRSelection()
+  call VimuxOpenRunner()
+  let ourcode = split(@k, "\n")
+  let n = len(ourcode)
+  let i = 0
+  while i < n
+    call VimuxSendText(ourcode[i])
+    call VimuxSendKeys('enter')
+    let i += 1
+  endwhile
+endfunction
+
+" keybindings for vimux
+vnoremap <leader><CR> "ky:call MyRSelection()<cr>
+nnoremap <leader><CR> :call MyRLine()<cr>j
+nnoremap <leader><leader> :call MyRSource()<cr>
+nnoremap <leader>c :call VimuxRunCommand("")<left><left>
 
 " search
 set ignorecase
