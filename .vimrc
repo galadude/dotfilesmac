@@ -1,16 +1,31 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" galadude's vimrc
+"
+" version: 
+"   1.0.0  2015-10-22
+"
+" sections:
+"    - VUNDLE SET UP
+"    - MY FUNCTIONS
+"    - MAPS
+"    - GENERAL SETTINGS
+"
+" macro: :t8dwI"    - 
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"""
-""" Vundle Set up
-"""
 
+""" vundle preamble 
 set nocompatible              " be iMproved, required
 filetype off                  " required
-
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" MY PLUGINS
+
+""" MY PLUGINS
+"""
+
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/Vim-R-plugin'
@@ -20,45 +35,49 @@ Plugin 'benmills/vimux'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jalvesaq/R-Vim-runtime'
+Plugin 'VimOrganizer'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'lervag/vimtex'
 
-" " All of your Plugins must be added before the following line
+""" Vundle postamble
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-
-"""
-""" My Functions
+""" MY FUNCTIONS
 """
 
 " Vimux fun
 function! MyRSource()
-  normal :w 
-  call VimuxOpenRunner()
-  call VimuxSendText("source('")
-  call VimuxSendText(@%)
-  call VimuxSendText("')")
-  call VimuxSendKeys('enter')
+normal :w 
+call VimuxOpenRunner()
+call VimuxSendText("source('")
+call VimuxSendText(@%)
+call VimuxSendText("')")
+call VimuxSendKeys('enter')
 endfunction
 
 function! MyRLine()
-  call VimuxOpenRunner()
-  normal "kyy
-  call VimuxSendText(@k)
+call VimuxOpenRunner()
+normal "kyy
+call VimuxSendText(@k)
 endfunction
 
 function! MyRSelection()
-  call VimuxOpenRunner()
-  let ourcode = split(@k, "\n")
-  let n = len(ourcode)
-  let i = 0
-  while i < n
-    call VimuxSendText(ourcode[i])
-    call VimuxSendKeys('enter')
-    let i += 1
-  endwhile
+call VimuxOpenRunner()
+let ourcode = split(@k, "\n")
+let n = len(ourcode)
+let i = 0
+while i < n
+call VimuxSendText(ourcode[i])
+call VimuxSendKeys('enter')
+let i += 1
+endwhile
 endfunction
 
-"""
 """ MAPS
 """
 
@@ -74,39 +93,47 @@ cnoremap <C-f> <Right>
 cnoremap <M-b> <S-Left>
 cnoremap <M-f> <S-Right>
 
+""" insert mode maps
+inoremap <C-n> <Down>
+inoremap <C-p> <up>
+inoremap <C-a> <esc>I
+inoremap <C-e> <esc>A
+
 """ buffer maps
 cnoremap wbn :w<cr>:bn
 
-""" My operators
-
-""" My general maps
-ino <C-l> <esc>
+""" my general maps
+inoremap <C-space> <esc>
 nmap <leader>0 :source $MYVIMRC<cr>:echo 'vimrc sourced'<cr>
 
-""" My navigation maps
-no k gk
-no j gj
-no 0 g0
-no ½ g$
+""" my navigation maps
+noremap k gk
+noremap j gj
+noremap 0 g0
+noremap ½ g$
 
 """ My searching maps (very magic)
-no <space> /\v
-no <C-space> ?\v
+noremap <space> /\v
 
 map <leader>h :nohl<cr>
-vno <leader>r "hy:%s/\v<C-r>h//gc<left><left><left>
-vno <leader>g "hy:g/\v<C-r>h/
+vnoremap <leader>r "hy:%s/\v<C-r>h//gc<left><left><left>
+vnoremap <leader>g "hy:g/\v<C-r>h/
 
-" VIMUX MAPS
-vno <leader>l "ky:call MyRSelection()<cr>
-nno <leader>l :call MyRLine()<cr>j
+""" plugin maps 
+nnoremap <C-n> :NERDTreeToggle<cr>
+
+""" VIMUX MAPS
+vnoremap <leader>l "ky:call MyRSelection()<cr>
+nnoremap <leader>l :call MyRLine()<cr>j
 map! <leader>l :call MyRLine()<cr>j
-nno <leader><leader> :call MyRSource()<cr>
-nno <leader>c :call VimuxRunCommand("")<left><left>
+nnoremap <leader><leader> :call MyRSource()<cr>
+nnoremap <leader>c :call VimuxRunCommand("")<left><left>
 
-"""
 """ GENERAL SETTINGS
 """
+
+""" plugin settings
+let g:vim_markdown_math=1
 
 """ My search
 set ignorecase
@@ -141,7 +168,12 @@ set backspace=2
 
 """ My misc
 set noswapfile
+"set foldmethod=indent
+
+""" file set up
 au BufRead,BufNewFile *.md set filetype=markdown
+au BufRead,BufNewFile *.md set filetype=markdown
+
 
 """ My Latex
 " IMPORTANT: grep will sometimes skip displaying the file name if you

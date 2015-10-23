@@ -1,10 +1,17 @@
-# Path to your oh-my-zsh installation.
+### My aliases
+###
+alias tmux='tmux -2' # 256 color mode
+alias mytar='tar -zxvf'
+
+### My Path
+###
+export PATH=/usr/local/texlive/2015/bin/i386-linux:$PATH
 export ZSH=$HOME/.oh-my-zsh
 export LC_ALL="en_US.UTF-8"
-
 # Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
+
+### THEME
+###
 ZSH_THEME="af-magic"
 
 # Uncomment the following line to use case-sensitive completion.
